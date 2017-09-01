@@ -244,6 +244,12 @@ open class EPCalendarPicker: UICollectionViewController {
         }
         
         cell.backgroundColor = UIColor.clear
+        
+        //graying the previous dates before the current date
+        let currentDate = NSDate().dateByIgnoringTime()
+        if(cell.currentDate.compare(currentDate) == NSComparisonResult.OrderedAscending) {
+            cell.lblDay.textColor = EPColors.LightGrayColor
+        }
         return cell
     }
 
