@@ -21,6 +21,7 @@ open class EPCalendarPicker: UICollectionViewController {
     open var calendarDelegate : EPCalendarPickerDelegate?
     open var multiSelectEnabled: Bool
     open var showsTodaysButton: Bool = true
+    open var disablePastDateSelection: Bool = false //ravikanth
     fileprivate var arrSelectedDates = [Date]()
     open var tintColor: UIColor
     
@@ -245,10 +246,12 @@ open class EPCalendarPicker: UICollectionViewController {
         
         cell.backgroundColor = UIColor.clear
         
-        //graying the previous dates before the current date
-        let currentDate = NSDate().dateByIgnoringTime()
-        if(cell.currentDate.compare(currentDate) == NSComparisonResult.OrderedAscending) {
-            cell.lblDay.textColor = EPColors.LightGrayColor
+        //ravikanth - graying the past dates
+        if disablePastDateSelection {
+            let currentDate = NSDate().dateByIgnoringTime()
+            if(cell.currentDate.compare(currentDate) == NSComparisonResult.OrderedAscending) {
+                cell.lblDay.textColor = EPColors.LightGrayColor
+            }
         }
         return cell
     }
@@ -257,7 +260,7 @@ open class EPCalendarPicker: UICollectionViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize
     {
         
-        let rect = UIScreen.main.bounds
+        let rect = CGRectMake(0, 0, 320, 260) //UIScreen.main.bounds //ravikanth
         let screenWidth = rect.size.width - 7
         return CGSize(width: screenWidth/7, height: screenWidth/7);
     }
@@ -289,6 +292,15 @@ open class EPCalendarPicker: UICollectionViewController {
     
     override open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! EPCalendarCell1
+        
+        //ravikanth
+        if disablePastDateSelection {
+            let currentDate = NSDate().dateByIgnoringTime()
+            if(cell.currentDate.compare(currentDate) == NSComparisonResult.OrderedAscending) {
+                return
+            }
+        }
+        
         if !multiSelectEnabled && cell.isCellSelectable! {
             calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate as Date)
             cell.selectedForLabelColor(dateSelectionColor)
