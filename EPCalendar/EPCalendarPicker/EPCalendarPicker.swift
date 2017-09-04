@@ -248,8 +248,8 @@ open class EPCalendarPicker: UICollectionViewController {
         
         //ravikanth - graying the past dates
         if disablePastDateSelection {
-            let currentDate = NSDate().dateByIgnoringTime()
-            if(cell.currentDate.compare(currentDate) == NSComparisonResult.OrderedAscending) {
+            let currentDate = Date().dateByIgnoringTime()
+            if(cell.currentDate.compare(currentDate) == ComparisonResult.orderedAscending) {
                 cell.lblDay.textColor = EPColors.LightGrayColor
             }
         }
@@ -260,7 +260,7 @@ open class EPCalendarPicker: UICollectionViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize
     {
         
-        let rect = CGRectMake(0, 0, 320, 260) //UIScreen.main.bounds //ravikanth
+        let rect = CGRect(x:0, y:0, width:320, height:260) //UIScreen.main.bounds //ravikanth
         let screenWidth = rect.size.width - 7
         return CGSize(width: screenWidth/7, height: screenWidth/7);
     }
@@ -295,8 +295,8 @@ open class EPCalendarPicker: UICollectionViewController {
         
         //ravikanth
         if disablePastDateSelection {
-            let currentDate = NSDate().dateByIgnoringTime()
-            if(cell.currentDate.compare(currentDate) == NSComparisonResult.OrderedAscending) {
+            let currentDate = Date().dateByIgnoringTime()
+            if(cell.currentDate.compare(currentDate) == ComparisonResult.orderedAscending) {
                 return
             }
         }
